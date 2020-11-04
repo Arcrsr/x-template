@@ -9,14 +9,14 @@ const { getAddonName, getDotaPath } = require('./utils');
     // You can add any arguments there
     // For example `+dota_launch_custom_game ${getAddonName()} dota` would automatically load "dota" map
     let addon_name = getAddonName();
-    let map_name;
-    let argv = JSON.parse(process.env.npm_config_argv.replace("'", '')).original;
-    for (let i in argv) {
-        let mm = argv[i];
-        let cm = argv[Number(i) + 1];
-        if (mm == '--m') map_name = cm;
-        if (mm == '--a') addon_name = cm;
-    }
+    let map_name = "template_map";
+    // let argv = JSON.parse(process.env.npm_config_argv.replace("'", '')).original;
+    // for (let i in argv) {
+    //     let mm = argv[i];
+    //     let cm = argv[Number(i) + 1];
+    //     if (mm == '--m') map_name = cm;
+    //     if (mm == '--a') addon_name = cm;
+    // }
     console.log('begin to load addon=>', addon_name);
     if (addon_name == getAddonName() && map_name == null) console.log('you can use launch options\n--m map_name \n--a addon');
     const args = ['-novid', '-tools', '-addon', addon_name];
