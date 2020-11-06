@@ -27,12 +27,12 @@ export interface BaseModifierMotionBoth extends CDOTA_Modifier_Lua_Motion_Both {
 export class BaseModifierMotionBoth extends BaseModifier {}
 
 // Add standard base classes to prototype chain to make `super.*` work as `self.BaseClass.*`
-setmetatable(BaseAbility.prototype, { __index: CDOTA_Ability_Lua ?? C_DOTA_Ability_Lua });
-setmetatable(BaseItem.prototype, { __index: CDOTA_Item_Lua ?? C_DOTA_Item_Lua });
-setmetatable(BaseModifier.prototype, { __index: CDOTA_Modifier_Lua ?? C_DOTA_Modifier_Lua });
+setmetatable(BaseAbility.prototype, {__index: CDOTA_Ability_Lua ?? C_DOTA_Ability_Lua});
+setmetatable(BaseItem.prototype, {__index: CDOTA_Item_Lua ?? C_DOTA_Item_Lua});
+setmetatable(BaseModifier.prototype, {__index: CDOTA_Modifier_Lua ?? C_DOTA_Modifier_Lua});
 
 export const registerAbility = (name?: string) => (ability: new () => CDOTA_Ability_Lua | CDOTA_Item_Lua) => {
-    if (name !== undefined) {
+    if(name !== undefined) {
         // @ts-ignore
         ability.name = name;
     } else {
@@ -41,7 +41,7 @@ export const registerAbility = (name?: string) => (ability: new () => CDOTA_Abil
 
     const [env] = getFileScope();
 
-    if (env[name]) {
+    if(env[name]) {
         clearTable(env[name]);
     } else {
         env[name] = {};
@@ -50,16 +50,16 @@ export const registerAbility = (name?: string) => (ability: new () => CDOTA_Abil
     toDotaClassInstance(env[name], ability);
 
     const originalSpawn = (env[name] as CDOTA_Ability_Lua).Spawn;
-    env[name].Spawn = function () {
+    env[name].Spawn = function() {
         this.____constructor();
-        if (originalSpawn) {
+        if(originalSpawn) {
             originalSpawn.call(this);
         }
     };
 };
 
 export const registerModifier = (name?: string) => (modifier: new () => CDOTA_Modifier_Lua) => {
-    if (name !== undefined) {
+    if(name !== undefined) {
         // @ts-ignore
         modifier.name = name;
     } else {
@@ -69,7 +69,7 @@ export const registerModifier = (name?: string) => (modifier: new () => CDOTA_Mo
     const [env, source] = getFileScope();
     const [fileName] = string.gsub(source, ".*scripts[\\/]vscripts[\\/]", "");
 
-    if (env[name]) {
+    if(env[name]) {
         clearTable(env[name]);
     } else {
         env[name] = {};
@@ -78,23 +78,23 @@ export const registerModifier = (name?: string) => (modifier: new () => CDOTA_Mo
     toDotaClassInstance(env[name], modifier);
 
     const originalOnCreated = (env[name] as CDOTA_Modifier_Lua).OnCreated;
-    env[name].OnCreated = function (parameters: any) {
+    env[name].OnCreated = function(parameters: any) {
         this.____constructor();
-        if (originalOnCreated) {
+        if(originalOnCreated) {
             originalOnCreated.call(this, parameters);
         }
     };
 
     let type = LuaModifierType.LUA_MODIFIER_MOTION_NONE;
     let base = (modifier as any).____super;
-    while (base) {
-        if (base === BaseModifierMotionBoth) {
+    while(base) {
+        if(base === BaseModifierMotionBoth) {
             type = LuaModifierType.LUA_MODIFIER_MOTION_BOTH;
             break;
-        } else if (base === BaseModifierMotionHorizontal) {
+        } else if(base === BaseModifierMotionHorizontal) {
             type = LuaModifierType.LUA_MODIFIER_MOTION_HORIZONTAL;
             break;
-        } else if (base === BaseModifierMotionVertical) {
+        } else if(base === BaseModifierMotionVertical) {
             type = LuaModifierType.LUA_MODIFIER_MOTION_VERTICAL;
             break;
         }
@@ -106,16 +106,16 @@ export const registerModifier = (name?: string) => (modifier: new () => CDOTA_Mo
 };
 
 function clearTable(table: object) {
-    for (const key in table) {
+    for(const key in table) {
         delete (table as any)[key];
     }
 }
 
 function getFileScope(): [any, string] {
     let level = 1;
-    while (true) {
+    while(true) {
         const info = debug.getinfo(level, "S");
-        if (info && info.what === "main") {
+        if(info && info.what === "main") {
             return [getfenv(level), info.source!];
         }
 
@@ -124,12 +124,12 @@ function getFileScope(): [any, string] {
 }
 
 function toDotaClassInstance(instance: any, table: new () => any) {
-    let { prototype } = table;
-    while (prototype) {
-        for (const key in prototype) {
+    let {prototype} = table;
+    while(prototype) {
+        for(const key in prototype) {
             // Using hasOwnProperty to ignore methods from metatable added by ExtendInstance
             // https://github.com/SteamDatabase/GameTracking-Dota2/blob/7edcaa294bdcf493df0846f8bbcd4d47a5c3bd57/game/core/scripts/vscripts/init.lua#L195
-            if (!instance.hasOwnProperty(key)) {
+            if(!instance.hasOwnProperty(key)) {
                 instance[key] = prototype[key];
             }
         }

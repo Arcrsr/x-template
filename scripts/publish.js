@@ -1,14 +1,14 @@
-console.log('publish script start to copy and encrypt files');
+console.log("publish script start to copy and encrypt files");
 
-const fs = require('fs-extra');
-const packageJson = require('../package.json');
-const aesjs = require('aes-js');
-const path = require('path');
-const { read_all_files, read_sub_directories } = require('./utils');
+const fs = require("fs-extra");
+const packageJson = require("../package.json");
+const aesjs = require("aes-js");
+const path = require("path");
+const { read_all_files, read_sub_directories } = require("./utils");
 
 const encrypt_content = (content) => {
     let key = packageJson.encrypt_key;
-    if (key == null || key == '') {
+    if (key == null || key == "") {
         // console.log('ignore encryption, the encrypt_key field is not defined in package.json');
         return content;
     }
@@ -32,8 +32,8 @@ function copyDir(src, dist, validate, should_encrypt, callback) {
                     callback(err);
                 } else {
                     paths.forEach(function (dir) {
-                        var _src = src + '/' + dir;
-                        var _dist = dist + '/' + dir;
+                        var _src = src + "/" + dir;
+                        var _dist = dist + "/" + dir;
                         fs.stat(_src, function (err, stat) {
                             if (err) {
                                 callback(err);
@@ -60,19 +60,19 @@ function copyDir(src, dist, validate, should_encrypt, callback) {
 }
 
 (async () => {
-    console.log('publish script start to copy and encrypt files');
+    console.log("publish script start to copy and encrypt files");
     copyDir(
-        'game',
-        'publish',
+        "game",
+        "publish",
         (_path) => {
             // validate
-            console.log('validate?', _path);
+            console.log("validate?", _path);
             let ext = path.extname(_path);
-            if (ext == '.ts') return false;
-            if (ext == '.bin') return false;
-            if (ext == '.cfg') return false;
-            if (ext == '.py') return false;
-            if (ext == '.json') return false;
+            if (ext == ".ts") return false;
+            if (ext == ".bin") return false;
+            if (ext == ".cfg") return false;
+            if (ext == ".py") return false;
+            if (ext == ".json") return false;
             return true;
         },
         (_path) => {
@@ -86,7 +86,7 @@ function copyDir(src, dist, validate, should_encrypt, callback) {
             // console.log('done publish file=>', _path);
         }
     );
-    console.log('done publish!');
+    console.log("done publish!");
 })().catch((error) => {
     console.error(error);
     process.exit(1);

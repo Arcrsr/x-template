@@ -22,7 +22,7 @@ export class GameMode {
     constructor() {
         this.configure();
         ListenToGameEvent("game_rules_state_change", () => this.OnStateChange(), undefined);
-        ListenToGameEvent("npc_spawned", event => this.OnNpcSpawned(event), undefined);
+        ListenToGameEvent("npc_spawned", (event) => this.OnNpcSpawned(event), undefined);
     }
 
     private configure(): void {
@@ -33,12 +33,10 @@ export class GameMode {
         GameRules.SetHeroSelectionTime(heroSelectionTime);
     }
 
-    public OnStateChange(): void {
-    }
+    public OnStateChange(): void {}
     public Reload() {
         print("Script reloaded!");
     }
 
-    private OnNpcSpawned(event: NpcSpawnedEvent) {
-    }
+    private OnNpcSpawned(event: NpcSpawnedEvent) {}
 }

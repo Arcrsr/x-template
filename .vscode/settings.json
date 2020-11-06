@@ -6,7 +6,7 @@
     "html.format.wrapLineLength": 0,
     "explorer.confirmDragAndDrop": false,
     "[typescript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"

@@ -1,18 +1,18 @@
-const path = require('path');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const { PanoramaManifestPlugin, PanoramaTargetPlugin } = require('webpack-panorama');
+const path = require("path");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const { PanoramaManifestPlugin, PanoramaTargetPlugin } = require("webpack-panorama");
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
-    mode: 'development',
-    context: path.resolve(__dirname, 'src'),
+    mode: "development",
+    context: path.resolve(__dirname, "src"),
     output: {
-        path: path.resolve(__dirname, 'layout/custom_game'),
-        publicPath: 'file://{resources}/layout/custom_game/',
+        path: path.resolve(__dirname, "layout/custom_game"),
+        publicPath: "file://{resources}/layout/custom_game/",
     },
 
     resolve: {
-        extensions: ['.ts', '.tsx', '...'],
+        extensions: [".ts", ".tsx", "..."],
         symlinks: false,
     },
 
@@ -20,28 +20,28 @@ module.exports = {
         rules: [
             {
                 test: /\.xml$/,
-                loader: 'webpack-panorama/lib/layout-loader',
+                loader: "webpack-panorama/lib/layout-loader",
             },
             {
                 test: /\.[jt]sx?$/,
                 issuer: /\.xml$/,
-                loader: 'webpack-panorama/lib/entry-loader',
+                loader: "webpack-panorama/lib/entry-loader",
             },
             {
                 test: /\.tsx?$/,
-                loader: 'ts-loader',
+                loader: "ts-loader",
                 options: { transpileOnly: true },
             },
             {
                 test: /\.css$/,
                 test: /\.(css|s[ac]ss)$/,
                 issuer: /\.xml$/,
-                loader: 'file-loader',
-                options: { name: '[path][name].css', esModule: false },
+                loader: "file-loader",
+                options: { name: "[path][name].css", esModule: false },
             },
             {
                 test: /\.s[ac]ss$/,
-                loader: 'sass-loader',
+                loader: "sass-loader",
             },
         ],
     },
@@ -51,16 +51,16 @@ module.exports = {
         new PanoramaManifestPlugin({
             entries: [
                 {
-                    import: './loading-screen/layout.xml',
-                    filename: 'custom_loading_screen.xml',
+                    import: "./loading-screen/layout.xml",
+                    filename: "custom_loading_screen.xml",
                 },
-                { import: './hud/layout.xml', type: 'Hud' },
-                { import: './end_screen/layout.xml', type: 'EndScreen' },
+                { import: "./hud/layout.xml", type: "Hud" },
+                { import: "./end_screen/layout.xml", type: "EndScreen" },
             ],
         }),
         new ForkTsCheckerWebpackPlugin({
             typescript: {
-                configFile: path.resolve(__dirname, 'tsconfig.json'),
+                configFile: path.resolve(__dirname, "tsconfig.json"),
             },
         }),
     ],
